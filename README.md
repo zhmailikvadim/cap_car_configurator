@@ -23,3 +23,9 @@ File or Folder | Purpose
 ## Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
+
+hana-cli copy2DefaultEnv
+
+Clear cashe: user: configurator $ rm -rf /home/user/.local/share/Trash/files user: configurator $ rm -rf /home/user/.cache user: configurator $ rm -rf /home/user/.npm
+
+Kill all processes killall -9 node
