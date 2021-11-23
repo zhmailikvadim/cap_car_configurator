@@ -485,26 +485,37 @@
               ]
             }
           ]
+        },
+        "to_adapters": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "app.cc.Adapters",
+          "on": [
+            {
+              "ref": [
+                "to_adapters",
+                "ID_component"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
         }
       }
     },
-    "CatalogService": {
-      "@source": "srv/cc-service.cds",
-      "kind": "service"
-    },
-    "CatalogService.Kinds": {
+    "app.cc.Adapters": {
       "kind": "entity",
-      "@odata.draft.enabled": true,
-      "@Capabilities.DeleteRestrictions.Deletable": true,
-      "@Capabilities.InsertRestrictions.Insertable": true,
-      "@Capabilities.UpdateRestrictions.Updatable": true,
-      "projection": {
-        "from": {
-          "ref": [
-            "app.cc.Kinds"
-          ]
-        }
-      },
+      "includes": [
+        "cuid",
+        "custom.managed",
+        "TextInfo"
+      ],
       "elements": {
         "createdAt": {
           "@cds.on.insert": {
@@ -595,6 +606,269 @@
           "length": 500
         },
         "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "ID_component": {
+          "type": "cds.Association",
+          "target": "app.cc.Components",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "CatalogService": {
+      "@source": "cc-service.cds",
+      "kind": "service"
+    },
+    "CatalogService.Kinds": {
+      "kind": "entity",
+      "@odata.draft.enabled": true,
+      "@Capabilities.DeleteRestrictions.Deletable": true,
+      "@Capabilities.InsertRestrictions.Insertable": true,
+      "@Capabilities.UpdateRestrictions.Updatable": true,
+      "@UI.PresentationVariant.Text": "Default",
+      "@UI.PresentationVariant.Visualizations": [
+        "@UI.LineItem"
+      ],
+      "@UI.PresentationVariant.SortOrder": [
+        {
+          "$Type": "Common.SortOrderType",
+          "Property": {
+            "=": "name"
+          },
+          "Descending": false
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        },
+        {
+          "=": "description"
+        }
+      ],
+      "@UI.HeaderInfo.TypeName": "Kind",
+      "@UI.HeaderInfo.TypeNamePlural": "Kinds",
+      "@UI.HeaderInfo.Title.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "name"
+      },
+      "@UI.HeaderInfo.Description.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Description.Value": {
+        "=": "description"
+      },
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Action": "CatalogService.CreateEntity",
+          "Label": "CreateEntity"
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "Booking",
+          "ID": "Kind",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "ID": "KindData",
+              "Target": "@UI.FieldGroup#Kind",
+              "Label": "Kind"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "administrativeData",
+              "Target": "@UI.FieldGroup#AdministrativeData"
+            }
+          ]
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Target": "to_models/@UI.LineItem",
+          "Label": "Models"
+        }
+      ],
+      "@UI.FieldGroup#Kind.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Kind.Label": "Kind",
+      "@UI.FieldGroup#Kind.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "@UI.FieldGroup#AdministrativeData.Label": "administrativeData",
+      "@UI.FieldGroup#AdministrativeData.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "ID"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "app.cc.Kinds"
+          ]
+        },
+        "columns": [
+          "*"
+        ]
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": {
+            "ref": [
+              "managed",
+              "createdAt"
+            ]
+          }
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": {
+            "ref": [
+              "managed",
+              "createdBy"
+            ]
+          },
+          "length": 255
+        },
+        "LastChangedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": {
+            "ref": [
+              "managed",
+              "modifiedAt"
+            ]
+          }
+        },
+        "LastChangedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": {
+            "ref": [
+              "managed",
+              "modifiedBy"
+            ]
+          },
+          "length": 255
+        },
+        "name": {
+          "@title": "Name",
+          "type": "Name",
+          "length": 50
+        },
+        "description": {
+          "@title": "Description",
+          "type": "LDescription",
+          "length": 500
+        },
+        "ID": {
+          "@readonly": true,
           "key": true,
           "type": "cds.UUID"
         },
@@ -621,25 +895,180 @@
         }
       },
       "actions": {
-        "createModel": {
+        "CreateEntity": {
           "kind": "action",
-          "@sap.applicable.path": "createModelEnabled"
+          "@sap.applicable.path": "CreateEntityEnabled"
         }
       }
     },
     "CatalogService.Models": {
       "kind": "entity",
       "@odata.draft.enabled": true,
-      "@Common.DraftRoot.ActivationAction": "createModel",
       "@Capabilities.DeleteRestrictions.Deletable": true,
       "@Capabilities.InsertRestrictions.Insertable": true,
       "@Capabilities.UpdateRestrictions.Updatable": true,
+      "@UI.CreateHidden": false,
+      "@UI.PresentationVariant.Text": "Default",
+      "@UI.PresentationVariant.Visualizations": [
+        "@UI.LineItem"
+      ],
+      "@UI.PresentationVariant.SortOrder": [
+        {
+          "$Type": "Common.SortOrderType",
+          "Property": {
+            "=": "name"
+          },
+          "Descending": false
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        },
+        {
+          "=": "description"
+        }
+      ],
+      "@UI.HeaderInfo.TypeName": "Model",
+      "@UI.HeaderInfo.TypeNamePlural": "Models",
+      "@UI.HeaderInfo.Title.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "name"
+      },
+      "@UI.HeaderInfo.Description.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Description.Value": {
+        "=": "description"
+      },
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "name"
+          },
+          "Label": "Model"
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        },
+        {
+          "Value": {
+            "=": "ID_kind_ID"
+          }
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Action": "CatalogService.CreateEntity",
+          "Label": "CreateEntity"
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "Model",
+          "ID": "Model",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "ID": "ModelData",
+              "Target": "@UI.FieldGroup#Model",
+              "Label": "Kind"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "administrativeData",
+              "Target": "@UI.FieldGroup#AdministrativeData"
+            }
+          ]
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Target": "to_components/@UI.LineItem",
+          "Label": "Models"
+        }
+      ],
+      "@UI.FieldGroup#Model.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Model.Label": "Model",
+      "@UI.FieldGroup#Model.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "description"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "ID_kind_ID"
+          }
+        }
+      ],
+      "@UI.FieldGroup#AdministrativeData.Label": "administrativeData",
+      "@UI.FieldGroup#AdministrativeData.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "ID_kind_ID"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "ID"
+          }
+        }
+      ],
       "projection": {
         "from": {
           "ref": [
             "app.cc.Models"
           ]
-        }
+        },
+        "columns": [
+          "*"
+        ]
       },
       "elements": {
         "createdAt": {
@@ -723,18 +1152,23 @@
           "length": 255
         },
         "name": {
+          "@title": "Name",
           "type": "Name",
           "length": 50
         },
         "description": {
+          "@title": "Description",
           "type": "LDescription",
           "length": 500
         },
         "ID": {
+          "@readonly": true,
+          "@title": "ID",
           "key": true,
           "type": "cds.UUID"
         },
         "ID_kind": {
+          "@title": "IdKind",
           "type": "cds.Association",
           "target": "CatalogService.Kinds",
           "keys": [
@@ -768,8 +1202,9 @@
         }
       },
       "actions": {
-        "deleteModel": {
-          "kind": "action"
+        "CreateEntity": {
+          "kind": "action",
+          "@sap.applicable.path": "CreateEntityEnabled"
         }
       }
     },
@@ -779,12 +1214,303 @@
       "@Capabilities.DeleteRestrictions.Deletable": true,
       "@Capabilities.InsertRestrictions.Insertable": true,
       "@Capabilities.UpdateRestrictions.Updatable": true,
+      "@UI.PresentationVariant.Text": "Default",
+      "@UI.PresentationVariant.Visualizations": [
+        "@UI.LineItem"
+      ],
+      "@UI.PresentationVariant.SortOrder": [
+        {
+          "$Type": "Common.SortOrderType",
+          "Property": {
+            "=": "name"
+          },
+          "Descending": false
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        },
+        {
+          "=": "description"
+        }
+      ],
+      "@UI.HeaderInfo.TypeName": "Component",
+      "@UI.HeaderInfo.TypeNamePlural": "Components",
+      "@UI.HeaderInfo.Title.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "name"
+      },
+      "@UI.HeaderInfo.Description.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Description.Value": {
+        "=": "description"
+      },
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "name"
+          },
+          "Label": "Component"
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Action": "CatalogService.CreateEntity",
+          "Label": "CreateEntity"
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "Model",
+          "ID": "Component",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "ID": "ComponentData",
+              "Target": "@UI.FieldGroup#Component",
+              "Label": "Component"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "administrativeData",
+              "Target": "@UI.FieldGroup#AdministrativeData"
+            }
+          ]
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Target": "to_adapters/@UI.LineItem",
+          "Label": "Models"
+        }
+      ],
+      "@UI.FieldGroup#Component.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Component.Label": "Model",
+      "@UI.FieldGroup#Component.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "@UI.FieldGroup#AdministrativeData.Label": "administrativeData",
+      "@UI.FieldGroup#AdministrativeData.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "ID_model_ID"
+          }
+        }
+      ],
       "projection": {
         "from": {
           "ref": [
             "app.cc.Components"
           ]
+        },
+        "columns": [
+          "*"
+        ]
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": {
+            "ref": [
+              "managed",
+              "createdAt"
+            ]
+          }
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": {
+            "ref": [
+              "managed",
+              "createdBy"
+            ]
+          },
+          "length": 255
+        },
+        "LastChangedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": {
+            "ref": [
+              "managed",
+              "modifiedAt"
+            ]
+          }
+        },
+        "LastChangedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@description": "{i18n>UserID.Description}",
+          "type": {
+            "ref": [
+              "managed",
+              "modifiedBy"
+            ]
+          },
+          "length": 255
+        },
+        "name": {
+          "@title": "Name",
+          "type": "Name",
+          "length": 50
+        },
+        "description": {
+          "@title": "Description",
+          "type": "LDescription",
+          "length": 500
+        },
+        "ID": {
+          "@readonly": true,
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "ID_model": {
+          "@title": "ID_Model",
+          "type": "cds.Association",
+          "target": "CatalogService.Models",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "to_adapters": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "CatalogService.Adapters",
+          "on": [
+            {
+              "ref": [
+                "to_adapters",
+                "ID_component"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
         }
+      },
+      "actions": {
+        "CreateEntity": {
+          "kind": "action",
+          "@sap.applicable.path": "CreateEntityEnabled"
+        }
+      }
+    },
+    "CatalogService.Adapters": {
+      "kind": "entity",
+      "@odata.draft.enabled": true,
+      "@Capabilities.DeleteRestrictions.Deletable": true,
+      "@Capabilities.InsertRestrictions.Insertable": true,
+      "@Capabilities.UpdateRestrictions.Updatable": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "app.cc.Adapters"
+          ]
+        },
+        "columns": [
+          "*"
+        ]
       },
       "elements": {
         "createdAt": {
@@ -879,9 +1605,9 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "ID_model": {
+        "ID_component": {
           "type": "cds.Association",
-          "target": "CatalogService.Models",
+          "target": "CatalogService.Components",
           "keys": [
             {
               "ref": [

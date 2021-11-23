@@ -10,10 +10,10 @@ type Name : String(50);
 type LDescription : String(500);
 
 entity Kinds : cuid, managed, TextInfo {
-    key ID          : UUID;
+    key ID        : UUID;
 
-        to_models   : Association to many Models
-                          on to_models.ID_kind = $self;
+        to_models : Association to many Models
+                        on to_models.ID_kind = $self;
 };
 
 entity Models : cuid, managed, TextInfo {
@@ -26,4 +26,11 @@ entity Models : cuid, managed, TextInfo {
 entity Components : cuid, managed, TextInfo {
     key ID          : UUID;
         ID_model    : Association to Models;
+        to_adapters : Association to many Adapters
+                          on to_adapters.ID_component = $self
+};
+
+entity Adapters : cuid, managed, TextInfo {
+    key ID           : UUID;
+        ID_component : Association to Components;
 }
