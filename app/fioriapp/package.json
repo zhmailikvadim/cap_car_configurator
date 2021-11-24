@@ -14,10 +14,9 @@
     },
     "devDependencies": {
         "@sap/ui5-builder-webide-extension": "1.0.x",
-        "@sap/ux-specification": "^1.90.14",
-        "mbt": "^1.0.15",
         "ui5-task-zipper": "^0.3.1",
-     },
+        "mbt": "^1.0.15"
+    },
     "ui5": {
         "dependencies": [
             "@sap/ui5-builder-webide-extension",

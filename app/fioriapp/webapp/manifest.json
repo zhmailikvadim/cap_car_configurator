@@ -24,7 +24,7 @@
             "id": "ui5template.fiorielements.v4.lrop",
             "version": "1.0.0"
         }
-    },  
+    },
     "sap.ui": {
         "technology": "UI5",
         "icons": {
@@ -85,11 +85,21 @@
                     "name": "KindsObjectPage",
                     "target": "KindsObjectPage"
                 },
-                    {
-                        "pattern": "Kinds({key})/to_models({key2}):?query:",
-                        "name": "ModelsObjectPage",
-                        "target": "ModelsObjectPage"
-                    }
+                {
+                    "pattern": "Kinds({key})/to_children({key2}):?query:",
+                    "name": "ModelsObjectPage",
+                    "target": "ModelsObjectPage"
+                },
+                {
+                    "pattern": "Models({key})/to_children({key2}):?query:",
+                    "name": "ComponentsObjectPage",
+                    "target": "ComponentsObjectPage"
+                },
+                {
+                    "pattern": "Components({key})/to_children({key2}):?query:",
+                    "name": "AdaptersObjectPage",
+                    "target": "AdaptersObjectPage"
+                }
             ],
             "targets": {
                 "KindsList": {
@@ -118,27 +128,63 @@
                         "settings": {
                             "editableHeaderContent": false,
                             "entitySet": "Kinds",
-                                "navigation": {
-                                    "to_models": {
-                                        "detail": {
-                                            "route": "ModelsObjectPage"
-                                        }
+                            "navigation": {
+                                "to_children": {
+                                    "detail": {
+                                        "route": "ModelsObjectPage"
                                     }
                                 }
-                        }
-                    }
-                },
-                    "ModelsObjectPage": {
-                        "type": "Component",
-                        "id": "ModelsObjectPage",
-                        "name": "sap.fe.templates.ObjectPage",
-                        "options": {
-                            "settings": {
-                                "editableHeaderContent": false,
-                                "entitySet": "Models"
                             }
                         }
                     }
+                },
+                "ModelsObjectPage": {
+                    "type": "Component",
+                    "id": "ModelsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Models",
+                            "navigation": {
+                                "to_children": {
+                                    "detail": {
+                                        "route": "ComponentsObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "ComponentsObjectPage": {
+                    "type": "Component",
+                    "id": "ComponentsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Components",
+                            "navigation": {
+                                "to_children": {
+                                    "detail": {
+                                        "route": "AdaptersObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "AdaptersObjectPage": {
+                    "type": "Component",
+                    "id": "AdaptersObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Adapters"
+                        }
+                    }
+                }
             }
         },
         "contentDensities": {
