@@ -7,9 +7,9 @@ VIEW CatalogService_Models AS SELECT
   Models_0.name,
   Models_0.description,
   Models_0.ID,
-  Models_0.ID_kind_ID
+  Models_0.ID_parent_ID
 FROM app_cc_Models AS Models_0
 WITH ASSOCIATIONS (
-  MANY TO ONE JOIN CatalogService_Kinds AS ID_kind ON (ID_kind.ID = ID_kind_ID),
-  MANY TO MANY JOIN CatalogService_Components AS to_components ON (to_components.ID_model_ID = ID)
+  MANY TO ONE JOIN CatalogService_Kinds AS ID_parent ON (ID_parent.ID = ID_parent_ID),
+  MANY TO MANY JOIN CatalogService_Components AS to_children ON (to_children.ID_parent_ID = ID)
 )

@@ -13,6 +13,6 @@ COLUMN TABLE CatalogService_Kinds_drafts (
   DraftAdministrativeData_DraftUUID NVARCHAR(36) NOT NULL,
   PRIMARY KEY(ID)
 ) WITH ASSOCIATIONS (
-  MANY TO MANY JOIN CatalogService_Models AS to_models ON (to_models.ID_kind_ID = ID),
+  MANY TO MANY JOIN CatalogService_Models AS to_children ON (to_children.ID_parent_ID = ID),
   MANY TO ONE JOIN CatalogService_DraftAdministrativeData AS DraftAdministrativeData ON (DraftAdministrativeData.DraftUUID = DraftAdministrativeData_DraftUUID)
 )

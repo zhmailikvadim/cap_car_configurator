@@ -7,9 +7,9 @@ COLUMN TABLE app_cc_Components (
   name NVARCHAR(50),
   description NVARCHAR(500),
   ID NVARCHAR(36) NOT NULL,
-  ID_model_ID NVARCHAR(36),
+  ID_parent_ID NVARCHAR(36),
   PRIMARY KEY(ID)
 ) WITH ASSOCIATIONS (
-  MANY TO ONE JOIN app_cc_Models AS ID_model ON (ID_model.ID = ID_model_ID),
-  MANY TO MANY JOIN app_cc_Adapters AS to_adapters ON (to_adapters.ID_component_ID = ID)
+  MANY TO ONE JOIN app_cc_Models AS ID_parent ON (ID_parent.ID = ID_parent_ID),
+  MANY TO MANY JOIN app_cc_Adapters AS to_children ON (to_children.ID_parent_ID = ID)
 )

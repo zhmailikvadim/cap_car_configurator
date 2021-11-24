@@ -9,8 +9,8 @@ service CatalogService {
         InsertRestrictions : {Insertable : true},
         UpdateRestrictions : {Updatable : true}
     }) as projection on cc.Kinds{*,} actions {
-                 @sap.applicable.path : 'CreateEntityEnabled'
-        action CreateEntity();
+                 @sap.applicable.path : 'CreateChildEntityEnabled'
+        action CreateChildEntity();
     };
 
     @odata.draft.enabled
@@ -19,8 +19,8 @@ service CatalogService {
         InsertRestrictions : {Insertable : true},
         UpdateRestrictions : {Updatable : true}
     }) as projection on cc.Models{*,} actions {
-                  @sap.applicable.path : 'CreateEntityEnabled'
-        action CreateEntity();
+                  @sap.applicable.path : 'CreateChildEntityEnabled'
+        action CreateChildEntity();
     };
 
     @odata.draft.enabled
@@ -29,15 +29,15 @@ service CatalogService {
         InsertRestrictions : {Insertable : true},
         UpdateRestrictions : {Updatable : true}
     }) as projection on cc.Components{*,} actions {
-                      @sap.applicable.path : 'CreateEntityEnabled'
-        action CreateEntity();
+                      @sap.applicable.path : 'CreateChildEntityEnabled'
+        action CreateChildEntity();
     };
 
     @odata.draft.enabled
     entity Adapters @(Capabilities : {
         DeleteRestrictions : {Deletable : true},
         InsertRestrictions : {Insertable : true},
-        UpdateRestrictions : {Updatable : true}
+        UpdateRestrictions : {Updatable : true},
     }) as projection on cc.Adapters{*,};
 
     function Count() returns Integer;

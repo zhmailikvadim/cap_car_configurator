@@ -1,9 +1,34 @@
 using CatalogService as cs from '../srv/cc-service';
+
+annotate cs.Kinds {
+    ID          @readonly;
+    name        @title : 'Name';
+    description @title : 'Description';
+    to_children;
+}
+
+annotate cs.Models {
+    @readonly
+    ID          @title : 'ID';
+    name        @title : 'Name';
+    description @title : 'Description';
+    ID_parent   @title : 'IdKind';
+    to_children;
+};
+
+annotate cs.Components {
+    ID          @readonly;
+    name        @title : 'Name';
+    description @title : 'Description';
+    ID_parent   @title : 'ID_Model';
+    to_children;
+};
+
 annotate cs.Adapters {
     ID          @readonly;
     name        @title : 'Name';
     description @title : 'Description';
-    ID_component    @title : 'ID_Adapter';
+    ID_parent   @title : 'ID_Component';
 };
 
 annotate cs.Adapters with @UI : {
@@ -39,13 +64,13 @@ annotate cs.Adapters with @UI : {
     LineItem                       : [
         {
             Value : name,
-            Label : 'Component'
+            Label : 'Adapter'
         },
         {Value : description},
         {
             $Type  : 'UI.DataFieldForAction',
-            Action : 'CatalogService.CreateEntity',
-            Label  : 'CreateEntity'
+            Action : 'CatalogService.CreateChildEntity',
+            Label  : 'CreateChildEntity'
         },
     ],
 
@@ -57,7 +82,7 @@ annotate cs.Adapters with @UI : {
             {
                 $Type  : 'UI.ReferenceFacet',
                 ID     : 'AdapterData',
-                Target : '@UI.FieldGroup#Adapter',
+                Target : '@UI.FieldGroup#MainData',
                 Label  : 'Adapter'
             },
             {
@@ -66,9 +91,9 @@ annotate cs.Adapters with @UI : {
                 Target : '@UI.FieldGroup#AdministrativeData'
             },
         ],
-        
+
     }],
-    FieldGroup #Adapter          : {
+    FieldGroup #MainData           : {
         $Type : 'UI.FieldGroupType',
         Label : 'Model',
         Data  : [
@@ -103,17 +128,12 @@ annotate cs.Adapters with @UI : {
             },
             {
                 $Type : 'UI.DataField',
-                Value : ID_component_ID
+                Value : ID_parent_ID
             },
         ]
     }
 };
-annotate cs.Components {
-    ID          @readonly;
-    name        @title : 'Name';
-    description @title : 'Description';
-    ID_model    @title : 'ID_Model';
-};
+
 
 annotate cs.Components with @UI : {
     PresentationVariant            : {
@@ -153,35 +173,38 @@ annotate cs.Components with @UI : {
         {Value : description},
         {
             $Type  : 'UI.DataFieldForAction',
-            Action : 'CatalogService.CreateEntity',
-            Label  : 'CreateEntity'
+            Action : 'CatalogService.CreateChildEntity',
+            Label  : 'CreateChildEntity'
         },
     ],
 
-    Facets                         : [{
-        $Type  : 'UI.CollectionFacet',
-        Label  : 'Model',
-        ID     : 'Component',
-        Facets : [
-            {
-                $Type  : 'UI.ReferenceFacet',
-                ID     : 'ComponentData',
-                Target : '@UI.FieldGroup#Component',
-                Label  : 'Component'
-            },
-            {
-                $Type  : 'UI.ReferenceFacet',
-                Label  : 'administrativeData',
-                Target : '@UI.FieldGroup#AdministrativeData'
-            },
-        ],
-        
-    },        {
+    Facets                         : [
+        {
+            $Type  : 'UI.CollectionFacet',
+            Label  : 'Model',
+            ID     : 'Component',
+            Facets : [
+                {
+                    $Type  : 'UI.ReferenceFacet',
+                    ID     : 'ComponentData',
+                    Target : '@UI.FieldGroup#MainData',
+                    Label  : 'Component'
+                },
+                {
+                    $Type  : 'UI.ReferenceFacet',
+                    Label  : 'administrativeData',
+                    Target : '@UI.FieldGroup#AdministrativeData'
+                },
+            ],
+
+        },
+        {
             $Type  : 'UI.ReferenceFacet',
-            Target : 'to_adapters/@UI.LineItem',
-            Label  : 'Models'
-        } ],
-    FieldGroup #Component          : {
+            Target : 'to_children/@UI.LineItem',
+            Label  : 'Adapters'
+        }
+    ],
+    FieldGroup #MainData           : {
         $Type : 'UI.FieldGroupType',
         Label : 'Model',
         Data  : [
@@ -216,20 +239,12 @@ annotate cs.Components with @UI : {
             },
             {
                 $Type : 'UI.DataField',
-                Value : ID_model_ID
+                Value : ID_parent_ID
             },
         ]
     }
 };
 
-annotate cs.Models {
-    @readonly
-    ID            @title        : 'ID';
-    name          @title        : 'Name';
-    description   @title        : 'Description';
-    ID_kind       @title        : 'IdKind';
-    to_components ;
-};
 
 annotate cs.Models with @UI : {
     CreateHidden                   : false,
@@ -268,11 +283,11 @@ annotate cs.Models with @UI : {
             Label : 'Model'
         },
         {Value : description},
-        {Value : ID_kind_ID},
+        {Value : ID_parent_ID},
         {
             $Type  : 'UI.DataFieldForAction',
-            Action : 'CatalogService.CreateEntity',
-            Label  : 'CreateEntity'
+            Action : 'CatalogService.CreateChildEntity',
+            Label  : 'CreateChildEntity'
         },
     ],
 
@@ -285,7 +300,7 @@ annotate cs.Models with @UI : {
                 {
                     $Type  : 'UI.ReferenceFacet',
                     ID     : 'ModelData',
-                    Target : '@UI.FieldGroup#Model',
+                    Target : '@UI.FieldGroup#MainData',
                     Label  : 'Kind'
                 },
                 {
@@ -297,11 +312,11 @@ annotate cs.Models with @UI : {
         },
         {
             $Type  : 'UI.ReferenceFacet',
-            Target : 'to_components/@UI.LineItem',
-            Label  : 'Models'
+            Target : 'to_children/@UI.LineItem',
+            Label  : 'Cmponents'
         }
     ],
-    FieldGroup #Model              : {
+    FieldGroup #MainData           : {
         $Type : 'UI.FieldGroupType',
         Label : 'Model',
         Data  : [
@@ -315,7 +330,7 @@ annotate cs.Models with @UI : {
             },
             {
                 $Type : 'UI.DataField',
-                Value : ID_kind_ID
+                Value : ID_parent_ID
             },
         ]
     },
@@ -340,7 +355,7 @@ annotate cs.Models with @UI : {
             },
             {
                 $Type : 'UI.DataField',
-                Value : ID_kind_ID,
+                Value : ID_parent_ID,
             },
             {
                 $Type : 'UI.DataField',
@@ -350,12 +365,6 @@ annotate cs.Models with @UI : {
     }
 };
 
-annotate cs.Kinds {
-    ID          @readonly;
-    name        @title : 'Name';
-    description @title : 'Description';
-    to_models;
-}
 
 annotate cs.Kinds with @UI : {
     PresentationVariant            : {
@@ -392,21 +401,21 @@ annotate cs.Kinds with @UI : {
         {Value : description},
         {
             $Type  : 'UI.DataFieldForAction',
-            Action : 'CatalogService.CreateEntity',
-            Label  : 'CreateEntity'
+            Action : 'CatalogService.CreateChildEntity',
+            Label  : 'CreateChildEntity'
         },
     ],
 
     Facets                         : [
         {
             $Type  : 'UI.CollectionFacet',
-            Label  : 'Booking',
+            Label  : 'Kind',
             ID     : 'Kind',
             Facets : [
                 {
                     $Type  : 'UI.ReferenceFacet',
                     ID     : 'KindData',
-                    Target : '@UI.FieldGroup#Kind',
+                    Target : '@UI.FieldGroup#MainData',
                     Label  : 'Kind'
                 },
                 {
@@ -418,11 +427,11 @@ annotate cs.Kinds with @UI : {
         },
         {
             $Type  : 'UI.ReferenceFacet',
-            Target : 'to_models/@UI.LineItem',
+            Target : 'to_children/@UI.LineItem',
             Label  : 'Models'
         }
     ],
-    FieldGroup #Kind               : {
+    FieldGroup #MainData           : {
         $Type : 'UI.FieldGroupType',
         Label : 'Kind',
         Data  : [

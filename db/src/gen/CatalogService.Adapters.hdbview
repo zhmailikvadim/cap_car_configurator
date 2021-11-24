@@ -7,8 +7,8 @@ VIEW CatalogService_Adapters AS SELECT
   Adapters_0.name,
   Adapters_0.description,
   Adapters_0.ID,
-  Adapters_0.ID_component_ID
+  Adapters_0.ID_parent_ID
 FROM app_cc_Adapters AS Adapters_0
 WITH ASSOCIATIONS (
-  MANY TO ONE JOIN CatalogService_Components AS ID_component ON (ID_component.ID = ID_component_ID)
+  MANY TO ONE JOIN CatalogService_Components AS ID_parent ON (ID_parent.ID = ID_parent_ID)
 )

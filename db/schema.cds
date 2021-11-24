@@ -10,27 +10,27 @@ type Name : String(50);
 type LDescription : String(500);
 
 entity Kinds : cuid, managed, TextInfo {
-    key ID        : UUID;
+    key ID          : UUID;
 
-        to_models : Association to many Models
-                        on to_models.ID_kind = $self;
+        to_children : Association to many Models
+                          on to_children.ID_parent = $self;
 };
 
 entity Models : cuid, managed, TextInfo {
-    key ID            : UUID;
-        ID_kind       : Association to Kinds;
-        to_components : Association to many Components
-                            on to_components.ID_model = $self;
+    key ID          : UUID;
+        ID_parent   : Association to Kinds;
+        to_children : Association to many Components
+                          on to_children.ID_parent = $self;
 };
 
 entity Components : cuid, managed, TextInfo {
     key ID          : UUID;
-        ID_model    : Association to Models;
-        to_adapters : Association to many Adapters
-                          on to_adapters.ID_component = $self
+        ID_parent   : Association to Models;
+        to_children : Association to many Adapters
+                          on to_children.ID_parent = $self
 };
 
 entity Adapters : cuid, managed, TextInfo {
-    key ID           : UUID;
-        ID_component : Association to Components;
+    key ID        : UUID;
+        ID_parent : Association to Components;
 }

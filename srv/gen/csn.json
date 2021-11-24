@@ -218,7 +218,7 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "to_models": {
+        "to_children": {
           "type": "cds.Association",
           "cardinality": {
             "max": "*"
@@ -227,8 +227,8 @@
           "on": [
             {
               "ref": [
-                "to_models",
-                "ID_kind"
+                "to_children",
+                "ID_parent"
               ]
             },
             "=",
@@ -341,7 +341,7 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "ID_kind": {
+        "ID_parent": {
           "type": "cds.Association",
           "target": "app.cc.Kinds",
           "keys": [
@@ -352,7 +352,7 @@
             }
           ]
         },
-        "to_components": {
+        "to_children": {
           "type": "cds.Association",
           "cardinality": {
             "max": "*"
@@ -361,8 +361,8 @@
           "on": [
             {
               "ref": [
-                "to_components",
-                "ID_model"
+                "to_children",
+                "ID_parent"
               ]
             },
             "=",
@@ -475,7 +475,7 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "ID_model": {
+        "ID_parent": {
           "type": "cds.Association",
           "target": "app.cc.Models",
           "keys": [
@@ -486,7 +486,7 @@
             }
           ]
         },
-        "to_adapters": {
+        "to_children": {
           "type": "cds.Association",
           "cardinality": {
             "max": "*"
@@ -495,8 +495,8 @@
           "on": [
             {
               "ref": [
-                "to_adapters",
-                "ID_component"
+                "to_children",
+                "ID_parent"
               ]
             },
             "=",
@@ -609,7 +609,7 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "ID_component": {
+        "ID_parent": {
           "type": "cds.Association",
           "target": "app.cc.Components",
           "keys": [
@@ -688,14 +688,14 @@
         },
         {
           "$Type": "UI.DataFieldForAction",
-          "Action": "CatalogService.CreateEntity",
-          "Label": "CreateEntity"
+          "Action": "CatalogService.CreateChildEntity",
+          "Label": "CreateChildEntity"
         }
       ],
       "@UI.Facets": [
         {
           "$Type": "UI.CollectionFacet",
-          "Label": "Booking",
+          "Label": "Kind",
           "ID": "Kind",
           "Facets": [
             {
@@ -872,7 +872,7 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "to_models": {
+        "to_children": {
           "type": "cds.Association",
           "cardinality": {
             "max": "*"
@@ -881,8 +881,8 @@
           "on": [
             {
               "ref": [
-                "to_models",
-                "ID_kind"
+                "to_children",
+                "ID_parent"
               ]
             },
             "=",
@@ -895,9 +895,9 @@
         }
       },
       "actions": {
-        "CreateEntity": {
+        "CreateChildEntity": {
           "kind": "action",
-          "@sap.applicable.path": "CreateEntityEnabled"
+          "@sap.applicable.path": "CreateChildEntityEnabled"
         }
       }
     },
@@ -970,8 +970,8 @@
         },
         {
           "$Type": "UI.DataFieldForAction",
-          "Action": "CatalogService.CreateEntity",
-          "Label": "CreateEntity"
+          "Action": "CatalogService.CreateChildEntity",
+          "Label": "CreateChildEntity"
         }
       ],
       "@UI.Facets": [
@@ -1167,8 +1167,7 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "ID_kind": {
-          "@title": "IdKind",
+        "ID_parent": {
           "type": "cds.Association",
           "target": "CatalogService.Kinds",
           "keys": [
@@ -1179,7 +1178,7 @@
             }
           ]
         },
-        "to_components": {
+        "to_children": {
           "type": "cds.Association",
           "cardinality": {
             "max": "*"
@@ -1188,8 +1187,8 @@
           "on": [
             {
               "ref": [
-                "to_components",
-                "ID_model"
+                "to_children",
+                "ID_parent"
               ]
             },
             "=",
@@ -1202,9 +1201,9 @@
         }
       },
       "actions": {
-        "CreateEntity": {
+        "CreateChildEntity": {
           "kind": "action",
-          "@sap.applicable.path": "CreateEntityEnabled"
+          "@sap.applicable.path": "CreateChildEntityEnabled"
         }
       }
     },
@@ -1271,8 +1270,8 @@
         },
         {
           "$Type": "UI.DataFieldForAction",
-          "Action": "CatalogService.CreateEntity",
-          "Label": "CreateEntity"
+          "Action": "CatalogService.CreateChildEntity",
+          "Label": "CreateChildEntity"
         }
       ],
       "@UI.Facets": [
@@ -1455,8 +1454,7 @@
           "key": true,
           "type": "cds.UUID"
         },
-        "ID_model": {
-          "@title": "ID_Model",
+        "ID_parent": {
           "type": "cds.Association",
           "target": "CatalogService.Models",
           "keys": [
@@ -1467,7 +1465,7 @@
             }
           ]
         },
-        "to_adapters": {
+        "to_children": {
           "type": "cds.Association",
           "cardinality": {
             "max": "*"
@@ -1476,8 +1474,8 @@
           "on": [
             {
               "ref": [
-                "to_adapters",
-                "ID_component"
+                "to_children",
+                "ID_parent"
               ]
             },
             "=",
@@ -1490,9 +1488,9 @@
         }
       },
       "actions": {
-        "CreateEntity": {
+        "CreateChildEntity": {
           "kind": "action",
-          "@sap.applicable.path": "CreateEntityEnabled"
+          "@sap.applicable.path": "CreateChildEntityEnabled"
         }
       }
     },
@@ -1502,6 +1500,136 @@
       "@Capabilities.DeleteRestrictions.Deletable": true,
       "@Capabilities.InsertRestrictions.Insertable": true,
       "@Capabilities.UpdateRestrictions.Updatable": true,
+      "@UI.PresentationVariant.Text": "Default",
+      "@UI.PresentationVariant.Visualizations": [
+        "@UI.LineItem"
+      ],
+      "@UI.PresentationVariant.SortOrder": [
+        {
+          "$Type": "Common.SortOrderType",
+          "Property": {
+            "=": "name"
+          },
+          "Descending": false
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "@UI.SelectionFields": [
+        {
+          "=": "name"
+        },
+        {
+          "=": "description"
+        }
+      ],
+      "@UI.HeaderInfo.TypeName": "Adapter",
+      "@UI.HeaderInfo.TypeNamePlural": "Adapters",
+      "@UI.HeaderInfo.Title.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "name"
+      },
+      "@UI.HeaderInfo.Description.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Description.Value": {
+        "=": "description"
+      },
+      "@UI.LineItem": [
+        {
+          "Value": {
+            "=": "name"
+          },
+          "Label": "Adapter"
+        },
+        {
+          "Value": {
+            "=": "description"
+          }
+        },
+        {
+          "$Type": "UI.DataFieldForAction",
+          "Action": "CatalogService.CreateChildEntity",
+          "Label": "CreateChildEntity"
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "Model",
+          "ID": "Adapter",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "ID": "AdapterData",
+              "Target": "@UI.FieldGroup#Adapter",
+              "Label": "Adapter"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "administrativeData",
+              "Target": "@UI.FieldGroup#AdministrativeData"
+            }
+          ]
+        }
+      ],
+      "@UI.FieldGroup#Adapter.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Adapter.Label": "Model",
+      "@UI.FieldGroup#Adapter.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "name"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "description"
+          }
+        }
+      ],
+      "@UI.FieldGroup#AdministrativeData.Label": "administrativeData",
+      "@UI.FieldGroup#AdministrativeData.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "createdBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedAt"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "LastChangedBy"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "ID_component_ID"
+          }
+        }
+      ],
       "projection": {
         "from": {
           "ref": [
@@ -1594,18 +1722,21 @@
           "length": 255
         },
         "name": {
+          "@title": "Name",
           "type": "Name",
           "length": 50
         },
         "description": {
+          "@title": "Description",
           "type": "LDescription",
           "length": 500
         },
         "ID": {
+          "@readonly": true,
           "key": true,
           "type": "cds.UUID"
         },
-        "ID_component": {
+        "ID_parent": {
           "type": "cds.Association",
           "target": "CatalogService.Components",
           "keys": [
@@ -2180,6 +2311,39 @@
       }
     }
   },
+  "extensions": [
+    {
+      "annotate": "CatalogService.Adapters",
+      "elements": {
+        "ID_component": {
+          "@title": "ID_Component"
+        }
+      }
+    },
+    {
+      "annotate": "CatalogService.Components",
+      "elements": {
+        "ID_model": {
+          "@title": "ID_Model"
+        }
+      }
+    },
+    {
+      "annotate": "CatalogService.Kinds",
+      "elements": {
+        "to_models": {}
+      }
+    },
+    {
+      "annotate": "CatalogService.Models",
+      "elements": {
+        "ID_kind": {
+          "@title": "IdKind"
+        },
+        "to_components": {}
+      }
+    }
+  ],
   "meta": {
     "creator": "CDS Compiler v2.10.4",
     "flavor": "inferred"
