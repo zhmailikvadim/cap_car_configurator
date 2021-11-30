@@ -4,9 +4,6 @@ module.exports = srv => {
     srv.before('DELETE', '*', async(req) => {
         console.log("DeleteBefore",req.entity,req.params);
         await DELETE.from(getParentInfo(req).entity).where({'ID_parent_ID' : req.params[req.params.length - 1].ID})
-        //   const order = req.data
-        // if (order.quantity > 11) throw 'Order quantity must not exceed 11'
-
     })
 
     srv.on('CreateChildEntity', async (req, ) => {

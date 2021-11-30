@@ -701,7 +701,7 @@
             {
               "$Type": "UI.ReferenceFacet",
               "ID": "KindData",
-              "Target": "@UI.FieldGroup#Kind",
+              "Target": "@UI.FieldGroup#MainData",
               "Label": "Kind"
             },
             {
@@ -713,13 +713,13 @@
         },
         {
           "$Type": "UI.ReferenceFacet",
-          "Target": "to_models/@UI.LineItem",
+          "Target": "to_children/@UI.LineItem",
           "Label": "Models"
         }
       ],
-      "@UI.FieldGroup#Kind.$Type": "UI.FieldGroupType",
-      "@UI.FieldGroup#Kind.Label": "Kind",
-      "@UI.FieldGroup#Kind.Data": [
+      "@UI.FieldGroup#MainData.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#MainData.Label": "Kind",
+      "@UI.FieldGroup#MainData.Data": [
         {
           "$Type": "UI.DataField",
           "Value": {
@@ -965,7 +965,7 @@
         },
         {
           "Value": {
-            "=": "ID_kind_ID"
+            "=": "ID_parent_ID"
           }
         },
         {
@@ -983,7 +983,7 @@
             {
               "$Type": "UI.ReferenceFacet",
               "ID": "ModelData",
-              "Target": "@UI.FieldGroup#Model",
+              "Target": "@UI.FieldGroup#MainData",
               "Label": "Kind"
             },
             {
@@ -995,13 +995,13 @@
         },
         {
           "$Type": "UI.ReferenceFacet",
-          "Target": "to_components/@UI.LineItem",
-          "Label": "Models"
+          "Target": "to_children/@UI.LineItem",
+          "Label": "Cmponents"
         }
       ],
-      "@UI.FieldGroup#Model.$Type": "UI.FieldGroupType",
-      "@UI.FieldGroup#Model.Label": "Model",
-      "@UI.FieldGroup#Model.Data": [
+      "@UI.FieldGroup#MainData.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#MainData.Label": "Model",
+      "@UI.FieldGroup#MainData.Data": [
         {
           "$Type": "UI.DataField",
           "Value": {
@@ -1017,7 +1017,7 @@
         {
           "$Type": "UI.DataField",
           "Value": {
-            "=": "ID_kind_ID"
+            "=": "ID_parent_ID"
           }
         }
       ],
@@ -1050,7 +1050,7 @@
         {
           "$Type": "UI.DataField",
           "Value": {
-            "=": "ID_kind_ID"
+            "=": "ID_parent_ID"
           }
         },
         {
@@ -1168,6 +1168,7 @@
           "type": "cds.UUID"
         },
         "ID_parent": {
+          "@title": "IdKind",
           "type": "cds.Association",
           "target": "CatalogService.Kinds",
           "keys": [
@@ -1283,7 +1284,7 @@
             {
               "$Type": "UI.ReferenceFacet",
               "ID": "ComponentData",
-              "Target": "@UI.FieldGroup#Component",
+              "Target": "@UI.FieldGroup#MainData",
               "Label": "Component"
             },
             {
@@ -1295,13 +1296,13 @@
         },
         {
           "$Type": "UI.ReferenceFacet",
-          "Target": "to_adapters/@UI.LineItem",
-          "Label": "Models"
+          "Target": "to_children/@UI.LineItem",
+          "Label": "Adapters"
         }
       ],
-      "@UI.FieldGroup#Component.$Type": "UI.FieldGroupType",
-      "@UI.FieldGroup#Component.Label": "Model",
-      "@UI.FieldGroup#Component.Data": [
+      "@UI.FieldGroup#MainData.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#MainData.Label": "Model",
+      "@UI.FieldGroup#MainData.Data": [
         {
           "$Type": "UI.DataField",
           "Value": {
@@ -1344,7 +1345,7 @@
         {
           "$Type": "UI.DataField",
           "Value": {
-            "=": "ID_model_ID"
+            "=": "ID_parent_ID"
           }
         }
       ],
@@ -1455,6 +1456,7 @@
           "type": "cds.UUID"
         },
         "ID_parent": {
+          "@title": "ID_Model",
           "type": "cds.Association",
           "target": "CatalogService.Models",
           "keys": [
@@ -1570,7 +1572,7 @@
             {
               "$Type": "UI.ReferenceFacet",
               "ID": "AdapterData",
-              "Target": "@UI.FieldGroup#Adapter",
+              "Target": "@UI.FieldGroup#MainData",
               "Label": "Adapter"
             },
             {
@@ -1581,9 +1583,9 @@
           ]
         }
       ],
-      "@UI.FieldGroup#Adapter.$Type": "UI.FieldGroupType",
-      "@UI.FieldGroup#Adapter.Label": "Model",
-      "@UI.FieldGroup#Adapter.Data": [
+      "@UI.FieldGroup#MainData.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#MainData.Label": "Model",
+      "@UI.FieldGroup#MainData.Data": [
         {
           "$Type": "UI.DataField",
           "Value": {
@@ -1626,7 +1628,7 @@
         {
           "$Type": "UI.DataField",
           "Value": {
-            "=": "ID_component_ID"
+            "=": "ID_parent_ID"
           }
         }
       ],
@@ -1737,6 +1739,7 @@
           "type": "cds.UUID"
         },
         "ID_parent": {
+          "@title": "ID_Component",
           "type": "cds.Association",
           "target": "CatalogService.Components",
           "keys": [
@@ -2311,39 +2314,6 @@
       }
     }
   },
-  "extensions": [
-    {
-      "annotate": "CatalogService.Adapters",
-      "elements": {
-        "ID_component": {
-          "@title": "ID_Component"
-        }
-      }
-    },
-    {
-      "annotate": "CatalogService.Components",
-      "elements": {
-        "ID_model": {
-          "@title": "ID_Model"
-        }
-      }
-    },
-    {
-      "annotate": "CatalogService.Kinds",
-      "elements": {
-        "to_models": {}
-      }
-    },
-    {
-      "annotate": "CatalogService.Models",
-      "elements": {
-        "ID_kind": {
-          "@title": "IdKind"
-        },
-        "to_components": {}
-      }
-    }
-  ],
   "meta": {
     "creator": "CDS Compiler v2.10.4",
     "flavor": "inferred"
